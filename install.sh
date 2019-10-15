@@ -1,10 +1,5 @@
-echo "Hi, before installing Power Tracker, we would require a python library called python-tk to be installed. Allow us to install python-tk if it is not already installed."
-echo "a - Allow"
-echo "d - Deny"
-
-read opt
-
-if [ $opt='a' ]; then
+start_install()
+{
 	echo $(sudo apt-get install python-tk)
 	echo $(touch PowerTracker.desktop)
 	tracker=$PWD/tracker.sh
@@ -31,5 +26,18 @@ if [ $opt='a' ]; then
 	[ -d ~/.config/autostart ] && echo "Auto start enabled..." || echo $(sudo mkdir ~/.config/autostart) || echo "Auto start enabled..."
 	echo $(sudo cp PowerTracker.desktop ~/.config/autostart/)
 	echo "If there is no error messages, reboot your machine to run battery tracker"
-echo "Instead, you can run by double clicking \"PowerTracker\" icon"
-fi
+	echo "Instead, you can run by double clicking \"PowerTracker\" icon"
+}
+
+echo "Hi, before installing Power Tracker, we would require a python library called python-tk to be installed. Allow us to install python-tk if it is not already installed."
+echo "a - Allow"
+echo "d - Deny"
+
+# read opt
+
+read -p "Your answer here:" yn
+    case $yn in
+        [Aa]* ) start_install; break;;
+        [Bb]* ) exit;;
+        * ) echo "Installation of Power Tracker has been stopped";;
+    esac
