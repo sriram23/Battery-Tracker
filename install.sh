@@ -1,7 +1,10 @@
 start_install()
 {
-	echo $(sudo apt-get install python-tk)
-	echo $(touch PowerTracker.desktop)
+	echo "Installing..."
+	sudo apt-get install python -y
+	sudo apt-get install python-tk -y
+	echo "Installed python-tk"
+	touch PowerTracker.desktop
 	tracker=$PWD/tracker.sh
 	tracker_txt=$PWD/tracker.txt
 
@@ -10,7 +13,7 @@ start_install()
 
 	while IFS= read -r line
 	do
-	echo "$line\n" >>$tracker
+	echo "$line" >>$tracker
 	done <"$tracker_txt"
 
 
@@ -22,9 +25,13 @@ start_install()
 	echo "Name=Power Tracker" >> $my_desktop
 	echo "Terminal=false" >> $my_desktop
 	echo "X-GNOME-Autostart-enabled=true" >> $my_desktop
-	echo $(sudo chmod 777 *)
+	gio set $PWD/PowerTracker.desktop "metadata::trusted" yes
+	sudo chmod 777 *
+	user=$(whoami)
+	sudo chown $user *
 	[ -d ~/.config/autostart ] && echo "Auto start enabled..." || echo $(sudo mkdir ~/.config/autostart) || echo "Auto start enabled..."
-	echo $(sudo cp PowerTracker.desktop ~/.config/autostart/)
+	sudo cp PowerTracker.desktop ~/.config/autostart/
+	sh tracker.sh &
 	echo "If there is no error messages, reboot your machine to run battery tracker"
 	echo "Instead, you can run by double clicking \"PowerTracker\" icon"
 }
